@@ -1,0 +1,59 @@
+# Digikala shopping assistant - Quera AI bootcamp, project 3
+#
+# Setup on a fresh machine:
+#     python -m venv .venv
+#     .venv\Scripts\activate        (Windows)   |   source .venv/bin/activate  (Linux/macOS)
+#     pip install -r requirements.txt
+#
+# Developed and tested on Python 3.12.10 / Windows 11.
+# The pinned versions below are the ones the notebooks were validated against.
+
+
+# --- core data handling -------------------------------------------------
+# pandas 3 stores strings via PyArrow by default. The notebooks depend on that
+# behaviour, so do not drop to 2.x without re-checking the .str regex calls:
+# the PyArrow path uses RE2, which rejects backreferences and \uXXXX escapes.
+pandas>=3.0,<4                  # tested with 3.0.3
+numpy>=2.0,<3                   # tested with 2.5.0
+pyarrow>=19                     # parquet engine + pandas string backend
+
+
+# --- notebooks ----------------------------------------------------------
+# ipykernel is all that is strictly required; the front-end can be JupyterLab,
+# VS Code, or anything else that speaks the Jupyter protocol.
+ipykernel>=6.29
+ipywidgets>=8.1                 # the chat interface in section 10 of ali-02
+
+
+# --- charts -------------------------------------------------------------
+matplotlib>=3.9                 # section 7 of ali-01-EDA.ipynb
+
+
+# --- retrieval and classification ---------------------------------------
+# One library covers both: TfidfVectorizer builds the product index and the
+# per-product evidence ranking in ali-02, and the classification baseline in
+# the section-3 notebook. No embedding model is used; the measurement that
+# justified that choice is in section 9 of ali-02.
+scikit-learn>=1.5
+
+
+# --- LLM API ------------------------------------------------------------
+# The Metis gateway exposes the Gemini models behind an OpenAI-compatible API:
+#     https://api.metisai.ir/api/v1/wrapper/google
+# Direct access to generativelanguage.googleapis.com is blocked from Iran,
+# which is why the project goes through the gateway rather than google-genai.
+openai>=1.50
+python-dotenv>=1.0              # reads METIS_API_KEY from a local .env file
+
+
+# --- utilities ----------------------------------------------------------
+psutil>=5.9                     # available-RAM check in the EDA setup cell
+tqdm>=4.66
+
+
+# --- optional -----------------------------------------------------------
+# torch is imported in one EDA cell purely to report whether a GPU is present.
+# That cell handles its absence and prints "torch not installed", so a ~2 GB
+# download is not worth it just to run this project. Uncomment it only if you
+# also intend to fine-tune the section-3 model locally.
+# torch>=2.4
